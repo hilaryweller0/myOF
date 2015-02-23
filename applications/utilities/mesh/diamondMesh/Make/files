@@ -1,0 +1,4 @@
+diamondMesh.C
+extrudedMesh.C
+
+EXE = $(FOAM_USER_APPBIN)/diamondMesh

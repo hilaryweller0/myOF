@@ -1,0 +1,29 @@
+EXE_DEBUG = -DFULLDEBUG -ggdb3 -O0
+
+include $(GENERAL_RULES)/CGAL
+
+EXE_INC =  \
+    ${EXE_DEBUG} \
+    ${CGAL_INC} \
+    /*-I$(CGAL_ARCH_PATH)/../build/linux64Gcc/CGAL-3.8/include */\
+    -IInitialPoints \
+    -IVoronoiSphereMeshing \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(FOAM_USER_SRC)/sphericalMesh_210/lnInclude \
+    -I$(FOAM_SRC)/meshTools/lnInclude \
+    -I$(FOAM_SRC)/dynamicMesh/lnInclude \
+    -I$(LIB_SRC)/surfMesh/lnInclude \
+    -I$(FOAM_UTILITIES)/mesh/generation/extrude/extrudeMesh/extrudedMesh \
+    -I$(LIB_SRC)/mesh/extrudeModel/lnInclude
+
+EXE_LIBS = \
+    ${CGAL_LIBS} \
+    -L$(CGAL_ARCH_PATH)/lib \
+    -lCGAL \
+    -lsphericalMesh_210 \
+    -L$(FOAM_USER_LIBBIN) \
+    -lfiniteVolume \
+    -lsurfMesh \
+    -lmeshTools \
+    -ldynamicMesh \
+    -lextrudeModel

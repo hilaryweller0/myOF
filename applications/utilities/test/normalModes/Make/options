@@ -1,0 +1,13 @@
+EXE_INC = \
+    -ggdb3 -O0 \
+    -Wno-old-style-cast \
+    -I$(FOAM_USER_SRC)/fvMeshWithDual/lnInclude \
+    -I$(WM_THIRD_PARTY_DIR)/eigen-eigen-ffa86ffb5570 \
+    -I$(LIB_SRC)/finiteVolume/lnInclude
+
+EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) \
+    -lfvMeshWithDual \
+    -lOpenFOAM \
+    -lfiniteVolume
+

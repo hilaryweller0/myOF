@@ -1,0 +1,27 @@
+FoamFile
+{
+    version         1.4;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "constant";
+    local           "";
+
+    class           dictionary;
+    object          gmtDict;
+}
+
+// How to plot
+// Compulsory inputs
+projection "X18c/18c";
+projection2D XZ;
+//patch front;
+
+FieldsToPlot
+1
+(
+    [Exner filledContours 0 0 0 "wysiwyg"]
+);
+
+annotate "minMax 0.01 -0.005";

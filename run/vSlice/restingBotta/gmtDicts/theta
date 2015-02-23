@@ -1,0 +1,32 @@
+FoamFile
+{
+    version         1.4;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "constant";
+    local           "";
+
+    class           dictionary;
+    object          gmtDict;
+}
+
+// How to plot
+// Compulsory inputs
+projection "X9c/9c";
+projection2D XZ;
+boundaryPatch ground;
+
+FieldsToPlot
+2
+(
+    //[theta filledContours 290 330 1 "wysiwyg"]
+    [none mesh "1.5pt,dimgrey"]
+    [theta contours 289 570 1 "1p,black"]
+);
+
+//annotate "minMax 0.01 -0.005";
+region "0/10e3/0/10e3";
+separateLegend yes;
+boundaryMarks "a5e3/a5e3";

@@ -1,0 +1,12 @@
+EXE_DEBUG = -DFULLDEBUG -ggdb3 -O0
+
+EXE_INC =  \
+    ${EXE_DEBUG} \
+    -I$(FOAM_USER_SRC)/fvMeshWithDual/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude
+
+EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) \
+    -lfvMeshWithDual \
+    -lfiniteVolume
+

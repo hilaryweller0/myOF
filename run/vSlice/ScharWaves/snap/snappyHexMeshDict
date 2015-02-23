@@ -1,0 +1,87 @@
+FoamFile {
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+
+castellatedMesh true;
+snap            true;
+addLayers       false;
+
+mergeTolerance	1e-06;
+
+debug		1;
+
+geometry
+{
+	patchFaces_ground_constant.obj
+	{
+		type	triSurfaceMesh;
+	}
+}
+
+castellatedMeshControls
+{
+	locationInMesh			(500 500 19750);
+	maxLocalCells			100000;
+	maxGlobalCells			2000000;
+	minRefinementCells		0;
+	resolveFeatureAngle		30;
+	nCellsBetweenLevels		1;
+	allowFreeStandingZoneFaces	false;
+
+	features (
+	);
+
+	refinementSurfaces
+    {
+		patchFaces_ground_constant.obj
+        {
+			level		(0 0);
+		}
+	}
+
+	refinementRegions {}
+}
+
+snapControls
+{
+	nSmoothPatch			0;
+	tolerance			4.0;
+	nSolveIter			0;
+	nRelaxIter			1;
+}
+
+addLayersControls {
+	layers
+    {
+		patchFaces_ground_constant.obj
+        {
+			nSurfaceLayers 1;
+		}
+	}
+	relativeSizes			true;
+    expansionRatio			1.0;
+	finalLayerThickness		0.3;
+	minThickness			0.25;
+	nGrow				0;
+	featureAngle			130;
+	nRelaxIter			5;
+	nSmoothSurfaceNormals		1;
+	nSmoothNormals			3;
+	nSmoothThickness		10;
+	maxFaceThicknessRatio		0.5;
+	nBufferCellsNoExtrude		0;
+	maxThicknessToMedialRatio	0.3;
+	minMedialAxisAngle		90;
+	nLayerIter			50;
+}
+
+meshQualityControls
+{
+	#include "$WM_PROJECT_DIR/etc/caseDicts/meshQualityDict"
+
+    nSmoothScale			0;
+	errorReduction			0.75;
+}

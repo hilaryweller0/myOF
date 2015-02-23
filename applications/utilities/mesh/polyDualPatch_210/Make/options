@@ -1,0 +1,21 @@
+EXE_DEBUG = -DFULLDEBUG -ggdb3 -O0
+
+EXE_INC =  \
+    ${EXE_DEBUG} \
+    -I$(FOAM_USER_SRC)/sphericalMesh_210/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude \
+    -I$(LIB_SRC)/surfMesh/lnInclude \
+    -I$(LIB_SRC)/dynamicMesh/lnInclude \
+    -I$(FOAM_UTILITIES)/mesh/generation/extrude/extrudeMesh/extrudedMesh \
+    -I$(LIB_SRC)/mesh/extrudeModel/lnInclude
+
+EXE_LIBS = \
+    ${CGAL_LIBS} \
+    -L$(FOAM_USER_LIBBIN) \
+    -lsphericalMesh_210 \
+    -lfiniteVolume \
+    -lsurfMesh \
+    -lmeshTools \
+    -ldynamicMesh \
+    -lextrudeModel

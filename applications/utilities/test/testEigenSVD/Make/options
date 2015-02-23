@@ -1,0 +1,9 @@
+EXE_INC = \
+    -ggdb3 -O0 \
+    -Wno-old-style-cast \
+    -I$(WM_THIRD_PARTY_DIR)/eigen-eigen-ffa86ffb5570
+
+
+EXE_LIBS = \
+    -lOpenFOAM
+

@@ -1,0 +1,31 @@
+FoamFile
+{
+    version         1.4;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "constant";
+    local           "";
+
+    class           dictionary;
+    object          gmtDict;
+}
+
+// How to plot
+// Compulsory inputs
+projection "X18c/6c";
+projection2D XZ;
+patch front;
+
+FieldsToPlot
+4
+(
+    [TDiff filledContours -4e-3 4e-3 5e-4 "rainbow"]
+    [TDiff contours .5e-3 1e-2 .5e-3 "2pt,black"]
+    [TDiff contours 0 1 1 "2pt,black,2_6:0"]
+    [TDiff contours -1 -.5e-3 .5e-3 "2pt,black,30_30:0"]
+);
+
+boundaryMarks "f5e5/f2e3";
+separateLegend true;

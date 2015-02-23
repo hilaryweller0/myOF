@@ -1,0 +1,33 @@
+FoamFile
+{
+    version         1.4;
+    format          ascii;
+
+    root            "/export/lime/data-04/sws02hs/OpenFOAM/sws02hs-1.4.1/run/shallowWater";
+    case            "bucky4_30";
+    instance        "constant";
+    local           "";
+
+    class           dictionary;
+    object          gmtDict;
+}
+
+// How to plot
+projection "Q0/18c";
+//projection "G108/26.6/18c";
+projection2D latLon;
+
+FieldsToPlot
+1
+(
+    [perp_uError rawValues 0 6e-17 1e-17 "$GMTU/colours/white_blue_red.cpt"]
+    //[none mesh      "black"]
+    //[Uf    vectors   1e-1 1 "black"]
+    //[requiredResolution    contours   200000 400000 50000 "black"]
+);
+
+// options
+region "-180/180/-90/90";
+boundaryMarks "g0/g89";
+//separateLegend true;
+//overlay true;

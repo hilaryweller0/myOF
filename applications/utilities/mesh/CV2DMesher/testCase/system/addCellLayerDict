@@ -1,0 +1,78 @@
+// The FOAM Project // File: addCellLayerDict
+/*
+-------------------------------------------------------------------------------
+ =========         | dictionary
+ \\      /         | 
+  \\    /          | Name:   addCellLayerDict
+   \\  /           | Family: FoamX configuration file
+    \\/            | 
+    F ield         | FOAM version: 2.3
+    O peration     | Product of Nabla Ltd.
+    A and          | 
+    M anipulation  | Email: Enquiries@Nabla.co.uk
+-------------------------------------------------------------------------------
+*/
+// FoamX Case Dictionary.
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+
+    root            "/home/penfold/mattijs/foam/mattijs2.2/run/icoFoam";
+    case            "cavityTut";
+    instance        "system";
+    local           "";
+
+    class           dictionary;
+    object          addCellLayerDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Name of patches to operate on
+patches (oldInternalFaces);
+
+//- How to add layer
+//  add     - straight add of layer of thickness acc. to pointNormal
+//  shrink  - shrink back mesh from outside and add layer back onto original
+//            mesh surface
+//  surface - add layer by projecting onto nearest point on surface
+mode surface;
+
+//- Thickness/max thickness (absolute) of wanted cell layer
+thickness 1;
+
+//- Minimum thickness of cell layer. If for any reason layer cannot be
+//  above minThickness do not add layerif thickness below minThickNess.
+minThickness 0.01;
+
+
+shrinkCoeffs
+{
+    //- Number of displacement smoothing iterations
+    nSmoothDispl 100;
+
+    //- Number of iterations to scale back displacement field
+    nSnap 20;
+
+    //- Minimum pyramid volume. Is factor of volume of smallest cell. Should be
+    //  well below <1. Usually between 0.01(less converging, better mesh) and
+    //  0.001 (more converging, worse mesh)
+    minVol 0.01;
+
+    //- Max concaveness allowed. Is angle (in degrees) below which concavity
+    //  is allowed. 0 is straight face, <0 would be convex face.
+    //  Set to >180 if no limitation on face angles needed.
+    maxConcave 1000;
+}
+
+surfaceCoeffs
+{
+    surface "simpleBfs.stl";
+}
+
+
+
+
+// ************************************************************************* //

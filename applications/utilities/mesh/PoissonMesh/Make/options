@@ -1,0 +1,15 @@
+EXE_DEBUG = -DFULLDEBUG -ggdb3 -O0
+
+EXE_INC =  \
+    ${EXE_DEBUG} \
+    -I../VoronoiSphereMesh/InitialPoints \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(FOAM_USER_SRC)/fvMeshWithDual/lnInclude \
+    -I$(FOAM_USER_SRC)/finiteVolume/lnInclude \
+
+EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) \
+    -lfvMeshWithDual \
+    -lfiniteVolumeUser \
+    -lfiniteVolume
+

@@ -1,0 +1,16 @@
+VoronoiSphereMesh.C
+InitialPoints/InitialPoints.C
+InitialPoints/InitialPointsFromFile.C
+InitialPoints/InitialPointsFromCellCentres.C
+VoronoiSphereMeshing/VoronoiSphereMeshing.C
+VoronoiSphereMeshing/VoronoiSphereMeshingNav.C
+VoronoiSphereMeshing/VoronoiSphereMeshingHelpers.C
+VoronoiSphereMeshing/VoronoiSphereMeshingAlgorithms.C
+VoronoiSphereMeshing/VoronoiSphereMeshingIO.C
+
+/*
+/export/elder/data-06/sws02hs/OpenFOAM/ThirdParty-2.1.0/CGAL-3.8/src/CGAL/assertions.cpp
+/export/elder/data-06/sws02hs/OpenFOAM/ThirdParty-2.1.0/CGAL-3.8/src/CGAL/kernel.cpp
+/export/elder/data-06/sws02hs/OpenFOAM/ThirdParty-2.1.0/CGAL-3.8/src/CGAL/io.cpp*/
+
+EXE = $(FOAM_USER_APPBIN)/VoronoiSphereMesh

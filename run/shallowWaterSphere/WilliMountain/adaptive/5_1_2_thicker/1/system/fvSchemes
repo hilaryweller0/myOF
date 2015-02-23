@@ -1,0 +1,72 @@
+// The FOAM Project // File: fvSchemes
+/*
+-------------------------------------------------------------------------------
+ =========         | dictionary
+ \\      /         |
+  \\    /          | Name:   fvSchemes
+   \\  /           | Family: FoamX configuration file
+    \\/            |
+    F ield         | FOAM version: 2.3
+    O peration     | Product of Nabla Ltd.
+    A and          |
+    M anipulation  | Email: Enquiries@Nabla.co.uk
+-------------------------------------------------------------------------------
+*/
+// FoamX Case Dictionary.
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+
+    root            "/home/dm2/hilary/foam/hilary2.3/run/cosineBell";
+    case            "bucky5WilliamsonAlpha35";
+    instance        "system";
+    local           "";
+
+    class           dictionary;
+    object          fvSchemes;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+offCentre 0.5;
+
+ddtSchemes
+{
+	default      Euler;
+}
+
+gradSchemes
+{
+    default         Gauss midPoint;
+}
+
+divSchemes
+{
+    default         none;
+}
+
+laplacianSchemes
+{
+    default         Gauss midPoint uncorrected;
+}
+
+interpolationSchemes
+{
+    default         none;
+    interpolate(h)  CLUST 0.5 Uf;
+}
+
+snGradSchemes
+{
+    default         uncorrected;
+}
+
+fluxRequired
+{
+    h;
+    Phi;
+}
+
+// ************************************************************************* //

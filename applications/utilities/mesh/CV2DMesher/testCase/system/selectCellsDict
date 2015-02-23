@@ -1,0 +1,58 @@
+// The FOAM Project // File: selectCellsDict
+/*
+-------------------------------------------------------------------------------
+ =========         | dictionary
+ \\      /         | 
+  \\    /          | Name:   selectCellsDict
+   \\  /           | Family: FoamX configuration file
+    \\/            | 
+    F ield         | FOAM version: 2.3
+    O peration     | Product of Nabla Ltd.
+    A and          | 
+    M anipulation  | Email: Enquiries@Nabla.co.uk
+-------------------------------------------------------------------------------
+*/
+// FoamX Case Dictionary.
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+
+    root            "/home/penfold/mattijs/foam/mattijs2.1/run/icoFoam";
+    case            "cavity";
+    instance        "system";
+    local           "";
+
+    class           dictionary;
+    object          selectCellsDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+// Whether to use surface. If false no surface will be read and only
+// outsidePoints/selectOutside will be used to determine cells to keep.
+useSurface true;
+
+// Surface to keep to
+surface "simpleBfs.stl";
+
+// What is outside
+outsidePoints       ((3.001 3.001 1.001));
+
+
+//
+// Selection of final set
+//
+
+// Select based on side of surface. Usually select inside cells and project
+// outwards or select outside cells and project inwards.
+selectCut       false;
+selectInside    false;
+selectOutside   true;
+// Leave out cell closer than nearDistance to the surface. Usually
+// 0.5*of the cell size. Set to <0 to disable.
+nearDistance    0;
+
+// ************************************************************************* //

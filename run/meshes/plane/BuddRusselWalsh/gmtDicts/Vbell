@@ -1,0 +1,29 @@
+FoamFile
+{
+    version         2.2;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "constant";
+    local           "";
+
+    class           dictionary;
+    object          gmtDict;
+}
+
+// How to plot
+// Compulsory inputs
+projection "X9c/9c";
+projection2D XZ;
+
+FieldsToPlot
+2
+(
+    [volRatio rawValues 0 2.6 .1 "$GMTU/colours/white_blue_red.cpt"]
+    [none mesh "0.25p,black"]
+);
+
+annotate "minMax 0 -0.01";
+region "0/0.5/0/0.5";
+separateLegend true;

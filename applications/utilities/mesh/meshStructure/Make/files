@@ -1,0 +1,5 @@
+pointTopoDistanceData.C
+meshStructure.C
+
+EXE = $(FOAM_USER_APPBIN)/meshStructure
+

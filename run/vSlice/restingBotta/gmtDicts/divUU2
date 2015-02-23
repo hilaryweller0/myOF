@@ -1,0 +1,29 @@
+FoamFile
+{
+    version         1.4;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "constant";
+    local           "";
+
+    class           dictionary;
+    object          gmtDict;
+}
+
+// How to plot
+// Compulsory inputs
+projection "X18c/10c";
+projection2D XZ;
+patch front;
+
+FieldsToPlot
+2
+(
+    [none mesh "grey"]
+    [divUUf      vectors 1e7 1 "black"]
+);
+
+//region "2900000/3000000/0/10000";
+

@@ -1,0 +1,30 @@
+FoamFile
+{
+    version         1.4;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "constant";
+    local           "";
+
+    class           dictionary;
+    object          gmtDict;
+}
+
+// How to plot
+// Compulsory inputs
+projection "X18c/9c";
+projection2D XZ;
+//patch front;
+
+FieldsToPlot
+2
+(
+//    [Exner rawValues 0.7 1 0.01 "$GMTU/colours/white_blue_red.cpt"]
+    [Exner rawValues 0 0 0 "$GMTU/colours/white_blue_red.cpt"]
+    [Uf vectors 5000 13 "black"]
+);
+
+//region "-7500/-2500/0/2500";
+annotate "minMax 0.01 -0.005";

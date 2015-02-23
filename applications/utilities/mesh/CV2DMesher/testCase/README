@@ -1,0 +1,15 @@
+05/08/05 Testcase like backwards facing step.
+
+constant: blockMesh 
+
+    setSet .. simpleBfs
+        cellSet c0 clear
+        cellSet c0 invert
+        cellSet c0 delete labelToCell (0 1 4 5)
+
+0.005: subsetMesh .. simpleBfs c0
+    surfaceMeshTriangulate .. simpleBfs simpleBfs.stl
+    writeCellCentres .. simpleBfs
+
+0.01:
+    cgalDelaunay2D .. simpleBfs points-in simpleBfs.stl points-out

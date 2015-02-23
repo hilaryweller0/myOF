@@ -1,0 +1,4 @@
+calcPV.C
+
+EXE = $(FOAM_USER_APPBIN)/calcPV
+

@@ -1,0 +1,45 @@
+inputFiles=(errorDiags.dat errorDiags.dat errorDiags.dat
+            errorDiags.dat errorDiags.dat errorDiags.dat
+            errorDiags.dat errorDiags.dat errorDiags.dat
+            errorDiags.dat errorDiags.dat
+            errorDiags.dat errorDiags.dat
+            errorDiags.dat errorDiags.dat
+            errorDiags.dat errorDiags.dat
+            errorDiags.dat errorDiags.dat
+            errorDiags.dat errorDiags.dat)
+outFile=errorDiags.eps
+col=(10 2 3 11 12 13 14 15 16 4 4 5 5 6 6 7 7 8 8 9 9)
+legends=("l1h" "l2h" "linfh"
+         "l1(pv)" "l2(pv)" "linf(pv)" "l1(U)" "l2(U)" "linf(U)"
+    "energy" ""
+    "enstrophy" ""
+    "PV" ""
+    "mass" ""
+    "energy from Coriolis" ""
+    "energy from pressure gradient" ""
+)
+pens=("2pt,black," "2pt,black,-" "2pt,black,."
+      "2pt,blue," "2pt,blue,-" "2pt,blue,."
+      "2pt,red," "2pt,red,-" "2pt,red,."
+      "2pt,magenta," "2pt,magenta,-"
+      "2pt,cyan," "2pt,cyan,-"
+      "2pt,purple," "2pt,purple,-"
+      "2pt,green," "2pt,green,-"
+      "2pt,gold" "2pt,gold,-"
+      "2pt,grey," "2pt,grey,-")
+xlabel=days
+ylabel="normalised change"
+#xmin=0
+#xmax=120
+dx=1
+ymin=1e-20
+ymax=1
+dy=1
+xscale=/86400
+yscale=("*(1)" "*(1)" "*(1)" "*(1)" "*(1)" "*(1)" "*(1)" "*(1)" "*(1)"
+        "*(1)" "*(-1)" "*(1)" "*(-1)"
+        "*(1)" "*(-1)" "*(1)" "*(-1)" "*(1)" "*(-1)" "*(1)" "*(-1)")
+legPos=x10/9
+projection=X18c/12cl
+gv=0
+

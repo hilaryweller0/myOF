@@ -1,0 +1,4 @@
+curvedEdges/bellMountainEdge.C
+
+LIB = $(FOAM_LIBBIN)/libblockMeshUser
+

@@ -1,0 +1,32 @@
+FoamFile
+{
+    version         1.4;
+    format          ascii;
+
+    root            "/export/lime/data-04/sws02hs/OpenFOAM/sws02hs-1.4.1/run/shallowWater";
+    case            "bucky4_30";
+    instance        "constant";
+    local           "";
+
+    class           dictionary;
+    object          gmtDict;
+}
+
+// How to plot
+//projection "Q0/18c";
+projection "G90/30/18c";
+projection2D latLon;
+
+FieldsToPlot
+2
+(
+    [none mesh "grey"]
+    [gradPhi vectors 20 1 "black"]
+);
+
+// options
+region "0/360/-90/80";
+boundaryMarks "g0/g89";
+//separateLegend true;
+//overlay true;
+//lastPlot false;

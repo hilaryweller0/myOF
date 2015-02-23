@@ -1,0 +1,42 @@
+EXE_DEBUG = -DFULLDEBUG -ggdb3 -O0
+
+include $(GENERAL_RULES)/CGAL
+
+EXE_INC =  \
+/*    ${EXE_DEBUG} \
+    ${CGAL_INC} \
+    -frounding-math */\
+    -ImonitorFunction \
+/*    -I../VoronoiSphereMesh/InitialPoints \
+    -I../VoronoiSphereMesh/VoronoiSphereMeshing */\
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(FOAM_USER_SRC)/fvMeshWithDual/lnInclude \
+    -I$(FOAM_USER_SRC)/TRiSK/lnInclude \
+    -I$(FOAM_USER_SRC)/finiteVolume/lnInclude \
+    -I$(FOAM_USER_SRC)/sampling/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude \
+    -I$(LIB_SRC)/sampling/lnInclude
+
+EXE_LIBS = \
+    /*../VoronoiSphereMesh/Make/linuxGccDPOpt/InitialPoints.o \
+    ../VoronoiSphereMesh/Make/linuxGccDPOpt/InitialPointsRaw.o \
+    ../VoronoiSphereMesh/Make/linuxGccDPOpt/VoronoiSphereMeshing.o \
+    ../VoronoiSphereMesh/Make/linuxGccDPOpt/extrudedMesh.o \
+    ../VoronoiSphereMesh/Make/linuxGccDPOpt/VoronoiSphereMeshingIO.o \
+    ../VoronoiSphereMesh/Make/linuxGccDPOpt/VoronoiSphereMeshingAlgorithms.o \
+    ../VoronoiSphereMesh/Make/linuxGccDPOpt/VoronoiSphereMeshingHelpers.o \
+    ../VoronoiSphereMesh/Make/linuxGccDPOpt/VoronoiSphereMeshingNav.o \
+    -L${CGAL_LIB} \
+    -L${MPFR_ARCH_PATH}/lib \
+    -lCGAL \
+    -lmpfr \
+    -lboost_thread */\
+    -L$(FOAM_USER_LIBBIN) \
+    -lfvMeshWithDual \
+    -lTRiSK \
+    -lfiniteVolumeUser \
+    /*-lsurfMesh \
+    -ldynamicMesh \
+    -lextrudeModel */\
+    -lfiniteVolume -lmeshTools -lsamplingUser -lsampling
+

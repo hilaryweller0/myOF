@@ -1,0 +1,9 @@
+TRiSK3dData.C
+TRiSK3dinterpolateV.C
+TRiSK3dke.C
+TRiSK3dreconstructVec.C
+/*TRiSK3dperp.C
+TRiSK3dpvFlux.C*/
+TRiSK3dcurl.C
+
+LIB = $(FOAM_USER_LIBBIN)/libnonTRiSK3d

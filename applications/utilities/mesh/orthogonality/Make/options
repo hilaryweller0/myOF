@@ -1,0 +1,15 @@
+EXE_INC = \
+    -ggdb3 -O0 \
+    -I$(FOAM_USER_SRC)/finiteVolume/lnInclude \
+    -I$(FOAM_USER_SRC)/fvMeshWithDual/lnInclude \
+    -I$(FOAM_USER_SRC)/TRiSK/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude
+
+
+EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) \
+    -lfvMeshWithDual \
+    -lTRiSK \
+    -lfiniteVolumeUser \
+    -lfiniteVolume
+

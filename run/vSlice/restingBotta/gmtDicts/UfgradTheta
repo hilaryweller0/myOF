@@ -1,0 +1,30 @@
+FoamFile
+{
+    version         1.4;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "constant";
+    local           "";
+
+    class           dictionary;
+    object          gmtDict;
+}
+
+// How to plot
+// Compulsory inputs
+projection "X18c/18c";
+projection2D XZ;
+
+FieldsToPlot
+4
+(
+    [none mesh "grey"]
+    [Uf    vectors 500 1 "black"]
+    [u    vectors 500 1 "blue"]
+    [gradThetaDiff  vectors 2e5 1 "red"]
+);
+
+region "0/5e3/0/5e3";
+

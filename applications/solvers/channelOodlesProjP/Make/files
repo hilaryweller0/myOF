@@ -1,0 +1,4 @@
+channelOodles.C
+//channelOodlesPcorr.C
+
+EXE = $(FOAM_USER_APPBIN)/channelOodlesProjP

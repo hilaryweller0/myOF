@@ -1,0 +1,8 @@
+TRiSKData.C
+TRiSKcircToFluxDiagData.C
+TRiSKperp.C
+TRiSKreconstructVec.C
+TRiSKcurl.C
+TRiSKKE.C
+
+LIB = $(FOAM_USER_LIBBIN)/libTRiSK

@@ -1,0 +1,3 @@
+normalModes.C
+
+EXE = $(FOAM_USER_APPBIN)/normalModes

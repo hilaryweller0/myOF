@@ -1,0 +1,32 @@
+FoamFile
+{
+    version         2.2;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "constant";
+    local           "";
+
+    class           dictionary;
+    object          gmtDict;
+}
+
+// How to plot
+// Compulsory inputs
+projection "X18c/9c";
+projection2D XZ;
+
+FieldsToPlot
+4
+(
+    //[none mesh "grey"]
+    [UDiff rawValues 0 0 0 "$GMTU/colours/red_white_blue.cpt"]
+    [VDiff rawValues 0 0 0 "$GMTU/colours/red_white_blue.cpt"]
+    [uDiff vectors 0 1 "black"]
+    [UfDiff vectors 0 1 "black"]
+);
+
+//region "-20e3/20e3/0/12e3";
+//boundaryMarks "10000/5000";
+

@@ -1,0 +1,25 @@
+inputFiles=("save/dt01_cubicUpCPCFit_H/energy.dat"
+            "save/dt02_cubicUpCPCFit_H/energy.dat"
+            "save/dt05_cubicUpCPCFit_H/energy.dat"
+            "save/dt1_cubicUpCPCFit_H/energy.dat"
+            "save/dt2_cubicUpCPCFit_H/energy.dat"
+            "save/dt5_cubicUpCPCFit_H/energy.dat")
+outFile=comparePlots/theta.eps
+col=7
+colx=1
+legends=("0.1s" "0.2s" "0.5s" "1s" "2s" "5s")
+pens=("green" "red" "blue" "black" "cyan")
+xlabel='time (seconds)'
+ylabel='maximum @~q@~ (K)'
+xmin=0
+xmax=1000
+dx=200
+ddx=50
+ymin=301.4
+ymax=302.2
+dy=0.2
+ddy=0.05
+legPos=x1/5
+nSkip=1
+projection=X10c/10c
+gv=0

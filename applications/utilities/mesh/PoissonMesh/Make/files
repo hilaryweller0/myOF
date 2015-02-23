@@ -1,0 +1,7 @@
+PoissonMesh.C
+
+../VoronoiSphereMesh/InitialPoints/InitialPoints.C
+../VoronoiSphereMesh/InitialPoints/InitialPointsFromFile.C
+../VoronoiSphereMesh/InitialPoints/InitialPointsFromCellCentres.C
+
+EXE = $(FOAM_USER_APPBIN)/PoissonMesh

@@ -1,0 +1,11 @@
+EXE_INC = \
+    -DFULLDEBUG -g -O0 \
+    /* -I$(FOAM_USER_LIBSRC)/mattijsLib/lnInclude */ \
+    -I$(LIB_SRC)/meshTools/lnInclude \
+    -I$(LIB_SRC)/surfMesh/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude
+
+EXE_LIBS = \
+    /* -L$(FOAM_USER_LIBBIN) -lmattijsLib */ \
+    -lsurfMesh \
+    -lfiniteVolume

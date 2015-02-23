@@ -1,0 +1,16 @@
+EXE_INC = \
+    -ggdb3 -O0 \
+    -I$(FOAM_USER_SRC)/sphericalMesh_210/lnInclude \
+    -I$(FOAM_USER_SRC)/TRiSK_210/lnInclude \
+    -I$(FOAM_USER_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude
+
+EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) \
+    -lsphericalMesh_210 \
+    -lTRiSK_210 \
+    -lfiniteVolumeUser \
+    -lfiniteVolume \
+    -lmeshTools
+

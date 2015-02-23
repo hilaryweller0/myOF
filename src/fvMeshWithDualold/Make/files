@@ -1,0 +1,10 @@
+primitiveMesh/overrideCentresAreas.C
+primitiveMesh/primitiveMeshFindCell.C
+primitiveMesh/sphCentresAreasVols.C
+surfaceInterpolation/surfaceInterpolation.C
+polyMesh/meshDirections.C
+fvMeshWithDual/fvMeshWithDual.C
+fvMeshWithDual/fvMeshWithDualGeometry.C
+fvMeshWithDual/fvMeshWithDualnonOrthog.C
+
+LIB = $(FOAM_USER_LIBBIN)/libfvMeshWithDual
