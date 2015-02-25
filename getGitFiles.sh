@@ -5,6 +5,7 @@
 
 exts=".C .H .sh Dict"
 fileNames="Makefile files options runAll gmtDicts fvSchemes fvSolution README"
+excludes="lnInclude linux"
 
 files=''
 
@@ -18,6 +19,11 @@ for name in $fileNames; do
     files="$files $newFiles"
 done
 
+for ex in $excludes; do
+    filesTmp=`for file in $files; do echo $file; done | grep -v $ex`
+    files=$filesTmp
+done
+
 git add $files
 
 
@@ -26,8 +32,6 @@ git add $files
 # ./getGitFiles.sh
 # git commit -m 'All my developments in 2.3.0'
 # git remote add myOF https://github.com/hilaryweller0/myOF
+# git pull https://github.com/hilaryweller0/myOF
 # git push myOF master
-
-
-
 

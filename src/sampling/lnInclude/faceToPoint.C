@@ -1,1 +1,1 @@
-../meshToPointInterpolation/faceToPoint.C
+../meshToPointInterpolation/faceToPoint/faceToPoint.C

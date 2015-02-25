@@ -1,1 +1,1 @@
-../meshToPointInterpolation/rbfFit.C
+../meshToPointInterpolation/approxTypes/rbfFit.C

@@ -1,0 +1,30 @@
+FoamFile
+{
+    version         1.4;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "constant";
+    local           "";
+
+    class           dictionary;
+    object          gmtDict;
+}
+
+// How to plot
+// Compulsory inputs
+projection "X18c/9c";
+projection2D XZ;
+//patch frontAndBack;
+
+FieldsToPlot
+2
+(
+    [Tf rawValues -1 1 0.05 "$GMTU/colours/red_white_blue.cpt"]
+    [T rawValues -1 1 0.05 "$GMTU/colours/red_white_blue.cpt"]
+);
+
+region "-50e3/-10e3/0/20e3";
+annotate "minMax 0.01 -0.01";
+

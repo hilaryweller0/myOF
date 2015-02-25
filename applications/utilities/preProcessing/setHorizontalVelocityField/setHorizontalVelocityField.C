@@ -6,8 +6,8 @@ class VelocityProfile
     VelocityProfile(const IOdictionary& dict)
         :
             u0(readScalar(dict.lookup("maxVelocity"))),
-            z1(readScalar(dict.lookup("maxVelocityHeight"))),
-            z2(readScalar(dict.lookup("zeroVelocityHeight")))
+            z1(readScalar(dict.lookup("zeroVelocityHeight"))),
+            z2(readScalar(dict.lookup("maxVelocityHeight")))
     {}
 
     template<class Type, template<class> class PatchField, class GeoMesh>
@@ -61,7 +61,7 @@ class VelocityProfile
     {
         if (z > z1 && z < z2)
         {
-            return vector(u0*pow((Foam::sin(M_PI/2*(z-z1)/(z2-z1))),2), 0, 0);
+            return vector(u0*sqr(Foam::sin(M_PI/2*(z-z1)/(z2-z1))), 0, 0);
         }
         else if (z >= z2)
         {

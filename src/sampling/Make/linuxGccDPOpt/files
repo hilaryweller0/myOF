@@ -55,8 +55,8 @@
 
 meshToMeshInterpolation/meshToMesh/meshToMesh.C
 meshToMeshInterpolation/meshToMesh/calcMethod/linFit/linFitMethod.C
-meshToPointInterpolation/approxType.C
-meshToPointInterpolation/rbfFit.C
+meshToPointInterpolation/approxTypes/approxType.C
+meshToPointInterpolation/approxTypes/rbfFit.C
 
 LIB = $(FOAM_USER_LIBBIN)/libsamplingUser
 

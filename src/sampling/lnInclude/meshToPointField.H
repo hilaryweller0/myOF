@@ -1,1 +1,1 @@
-../meshToPointInterpolation/meshToPointField.H
+../meshToPointInterpolation/meshToPointField/meshToPointField.H

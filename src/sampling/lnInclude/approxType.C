@@ -1,1 +1,1 @@
-../meshToPointInterpolation/approxType.C
+../meshToPointInterpolation/approxTypes/approxType.C

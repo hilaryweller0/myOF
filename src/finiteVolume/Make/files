@@ -20,6 +20,9 @@ $(faceToFace)/fullStencils/CFCFaceToFaceStencil.C
 $(faceToFace)/extendedCentredFaceToFaceStencil.C
 $(faceToFace)/MeshObjects/centredCFCFaceToFaceStencilObject.C
 
+$(extendedStencil)/cellToCell/globalIndexStencils/CFCFCCellToCellStencil.C
+$(extendedStencil)/cellToCell/MeshObjects/centredCFCFCCellToCellStencilObject.C
+
 finiteVolume/sGradSchemes/quadraticFitSGrad/quadraticFitSGrads.C
 
 finiteVolume/snGradSchemes/linearFitSnGrad/linearFitSnGrads.C
