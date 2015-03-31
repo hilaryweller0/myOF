@@ -1,8 +1,0 @@
-#!/bin/bash -e
-
-# mesh generation
-blockMesh
-add2dMountain
-plotPatchData mesh
-gv constant/mesh.eps &
-
