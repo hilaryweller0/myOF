@@ -25,18 +25,12 @@ Application
     scalarTransportFoam
 
 Description
-    Solves a transport equation for a passive scalar using a forwrd in time discretisation
-    based on a single departure point per face
+    Solves a transport equation for a passive scalar using a forwrd in time
+    discretisation based on a single departure point per face
 
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
-#include "meshToPointField.H"
-//#include "rbfFit.H"
-#include "polyFit.H"
-#include "centredCFCCellToCellStencilObject.H"
-#include "centredCFCFCCellToCellStencilObject.H"
-#include "centredCPCCellToCellStencilObject.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -62,51 +56,20 @@ int main(int argc, char *argv[])
     );
     departurePoints.write();
     
-    // Class for interpolating onto departure points
-    const extendedCentredCellToCellStencil& meshStencil
-        = centredCFCFCCellToCellStencilObject::New(mesh);
-    meshToPointField<scalar, polyFit<oTWOPLUS>,  extendedCentredCellToCellStencil>
-        meshToDep(mesh, departurePoints, meshStencil);
-    
     // Interpolate the velocity onto the departure points, calculate the flux and
     // make it divergence free
     //Uf.internalField() = meshToDep.interpolate(U);
-    phi = Uf & mesh.Sf();
-    
-    for(int icorr = 0; icorr < 20; icorr++)
-    {
-        forAll(Uf, faci)
-        {
-            if (Uf[faci].x() > 10) Uf[faci].x() = 10;
-        }
-        phi = Uf & mesh.Sf();
-        fvScalarMatrix pEqn(fvm::laplacian(p) + fvc::div(phi));
-        pEqn.setReference(0, scalar(0));
-        pEqn.solve();
-        phi += pEqn.flux();
-        Uf += (phi - (Uf & mesh.Sf()))*mesh.Sf()/sqr(mesh.magSf());
-    }
-    
-    //Uf = linearInterpolate(fvc::reconstruct(phi));
-    Uf += (phi - (Uf & mesh.Sf()))*mesh.Sf()/sqr(mesh.magSf());
-    Uf.write();
-
-    volScalarField divu("divu", fvc::div(phi));
-    divu.write();
-
-//    volVectorField TU("TU", T*U);
-//    surfaceVectorField TUf("TUf", linearInterpolate(TU));
 
     while (runTime.loop())
     {
         Info<< "Time = " << runTime.timeName() << flush;
 
-        Tf.internalField() = meshToDep.interpolate(T);
+        Tf = fvc::interpolate(T);
 //        TU = T*U;
 //        TUf.internalField() = meshToDep.interpolate(TU);
 
-        Tf.internalField() = meshToDep.interpolate(T);
         T = T.oldTime() - dt*fvc::div(phi*Tf);
+        T.correctBoundaryConditions();
         
         Info << " T goes from " << min(T.internalField()) << " to "
              << max(T.internalField()) << endl;

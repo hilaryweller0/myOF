@@ -25,17 +25,12 @@ Application
     departurePointStencil
 
 Description
-    Works out the stencil for the interpolation onto a departure point
+    Works out the stencil and stencil weights for the interpolation onto a
+    departure point
 
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
-#include "meshToPointField.H"
-//#include "rbfFit.H"
-#include "polyFit.H"
-#include "centredCFCCellToCellStencilObject.H"
-#include "centredCFCFCCellToCellStencilObject.H"
-#include "centredCPCCellToCellStencilObject.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 // Main program:
@@ -101,15 +96,9 @@ int main(int argc, char *argv[])
     surfaceVectorField departurePoints
     (
         IOobject("departurePoints", runTime.timeName(), mesh),
-        mesh.Cf() - 2*Uf*dt
+        mesh.Cf() - 0.5*Uf*dt
     );
     departurePoints.write();
-
-    // Class for interpolating onto departure points
-    const extendedCentredCellToCellStencil& meshStencil
-        = centredCFCFCCellToCellStencilObject::New(mesh);
-    meshToPointField<scalar, polyFit<oTWOPLUS>,  extendedCentredCellToCellStencil>
-        meshToDep(mesh, departurePoints, meshStencil);
     
     // Loop through all cells and work out if each cell is a member of the 
     // stencil and what the weight is
@@ -117,7 +106,7 @@ int main(int argc, char *argv[])
     {
         psi = 0;
         psi[cellI] = 1;
-        psif.internalField() = meshToDep.interpolate(psi);
+        psif = fvc::interpolate(psi);
         if (psif[faceI] != 0)
         {
             stencil[cellI] = 1;

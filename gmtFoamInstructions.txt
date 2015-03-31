@@ -1,0 +1,93 @@
+# Instructions for installing gmtFoam
+# A tool for plotting 2D OpenFoam results using gmt (generic mapping tools)
+
+# There are no shortcuts for these instructions. The lines should be copied
+# one at a time onto the command line and check the outcome
+
+# installing openfoam
+# instructions from:
+# http://www.openfoam.org/download/ubuntu.php
+VERS=$(lsb_release -cs)
+sudo sh -c "echo deb http://www.openfoam.org/download/ubuntu $VERS main > /etc/apt/sources.list.d/openfoam.list" 
+sudo apt-get update
+sudo apt-get install openfoam231
+
+
+#** To use OpenFOAM please add
+#**
+#**    . /opt/openfoam231/etc/bashrc
+#**
+#** To your ~/.bashrc
+
+
+# pre-requisites for installing gmt
+sudo apt-get install cmake libnetcdf-dev
+
+# installing gmt (5.1.?)
+# instructions at
+# http://gmt.soest.hawaii.edu/projects/gmt/wiki/Download
+# to get a sufficiently recent version, it needs to be compiled from sources
+mkdir -p $HOME/gmt
+cd $HOME/gmt
+wget ftp://ftp.geologi.uio.no/pub/gmt/gmt-5.1.1-src.tar.bz2 \
+     ftp://ftp.geologi.uio.no/pub/gmt/gshhg-gmt-2.3.4.tar.gz
+     ftp://ftp.geologi.uio.no/pub/gmt/README.GMT
+bzip2 -dc gmt-5.1.1-src.tar.bz2 | tar xvf -
+cd gmt-5.1.1-src
+
+## follow instructions in README.CMake
+
+
+#** To use gmt please add the following lines to .bashrc
+#** 
+#**    export GMTU=$HOME/gmt/usr
+#**    export GMTC=$GMTU/colours/special
+
+
+# installing git
+sudo apt-get install git
+
+# install gv (for viewing postscript files)
+sudo apt-get install gv
+
+
+# installing gmtFoam
+mkdir -p $WM_PROJECT_USER_DIR/applications/utilities/postProcessing
+cd $WM_PROJECT_USER_DIR/applications/utilities/postProcessing
+git clone https://github.com/hilaryweller0/gmtFoam
+cd gmtFoam
+wmake
+cp -r gmt $HOME
+
+# To create an OpenFOAM tutorial case
+mkdir -p $FOAM_RUN/tutorials/incompressible/icoFoam
+cp -r $FOAM_TUTORIALS/incompressible/icoFoam/cavity \
+      $FOAM_RUN/tutorials/incompressible/icoFoam
+cd $FOAM_RUN/tutorials/incompressible/icoFoam/cavity
+blockMesh
+icoFoam
+
+# Instructions on how to use gmtFoam
+# from the OpenFOAM case where you want to use it (assuming this is 
+# $FOAM_RUN/tutorials/incompressible/icoFoam/cavity)
+cd $FOAM_RUN/tutorials/incompressible/icoFoam/cavity
+cp -r $WM_PROJECT_USER_DIR/applications/utilities/postProcessing/gmtFoam/gmtDicts constant
+
+# and to finally run gmtFoam to create a mesh plot and a results plot
+gmtFoam -time 0 mesh
+evince 0/mesh.pdf &
+gmtFoam -time 0.5 pU
+evince 0.5/pU.pdf &
+
+# Have a look at the gmt dictionaries in the constant/gmtDicts directory
+# too see you to plot things differently
+
+
+# not pre-requesites but other things I installed to help
+
+sudo apt-get install gedit-plugins openssh-server #\
+#    gv psutils gedit-plugins gedit-latex-plugin
+
+# fix for gedit
+sudo chown -R hilary:hilary .cache
+

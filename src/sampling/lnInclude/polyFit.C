@@ -1,1 +1,0 @@
-../meshToPointInterpolation/approxTypes/polyFit.C

@@ -148,7 +148,7 @@ void Foam::CFCFCCellToCellStencil::calcCellStencil(labelListList& globalCellCell
             label cii = cellCells[ci];
             merge
             (
-                globalNumbering().toGlobal(cii),
+                globalNumbering().toGlobal(cellI),
                 mesh().cellCells()[cii],
                 cCells
             );

@@ -3,6 +3,7 @@ EXE_INC = \
     -Wno-old-style-cast \
     -IlnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(FOAM_USER_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/triSurface/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \
@@ -14,6 +15,8 @@ EXE_INC = \
 EXE_LIBS = \
     -lOpenFOAM \
     -lfiniteVolume \
+    -L$(FOAM_USER_LIBBIN) \
+    -lfiniteVolumeUser \
     -ltriSurface \
     -lmeshTools \
     -lsampling \

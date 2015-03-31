@@ -26,8 +26,8 @@ Application
     setScalarOverOrography
 
 Description
-    Set the velocity, U, and the initial scalar, T for scalar transport over
-    orography
+    Set the initial scalar, T for scalar transport over orography for any time
+    or for all of the times in the case directory.
 
 \*---------------------------------------------------------------------------*/
 
@@ -37,42 +37,11 @@ Description
 
 using namespace Foam::constant::mathematical;
 
-scalar ScharCos(const scalar x, const scalar a) {
-    return sqr(Foam::cos(M_PI*x/a));
-}
-
-scalar ScharCosSmooth(const scalar x, const scalar a, const scalar hm) {
-    scalar h = 0;
-    if (mag(x) < a)
-    {
-        h = hm*sqr(Foam::cos(0.5*M_PI*x/a));
-    }
-    return h;
-}
-
-Foam::scalar ScharExp(const scalar x, const scalar a, const scalar hm)
-{
-    return hm*Foam::exp(-sqr(x/a));
-}
-
-scalar height_schaerCos(scalar x, scalar a, scalar hm, scalar lambda) {
-    return ScharCosSmooth(x, a, hm) * ScharCos(x, lambda);
-}
-
-scalar height_schaerExp(scalar x, scalar a, scalar hm, scalar lambda) {
-    return ScharExp(x, a, hm) * ScharCos(x, lambda);
-}
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char *argv[])
 {
     #include "addTimeOptions.H"
-    Foam::argList::addOption
-    (
-        "x0", "int",
-        "specify horizontal placement of tracer, overrides x0 specified in initialConditions dictionary"
-     );
     Foam::argList::addOption
     (
         "tracerFieldFileName", "filename", 
@@ -82,6 +51,10 @@ int main(int argc, char *argv[])
 #   include "createTime.H"
     // Get times list
     instantList Times = runTime.times();
+    if (Times.size() == 1 && !args.optionFound("constant"))
+    {
+        Times.append(instant(scalar(0)));
+    }
 
     // set startTime and endTime depending on -time and -latestTime options
     #include "checkTimeOptions.H"
@@ -96,46 +69,29 @@ int main(int argc, char *argv[])
     (
         IOobject
         (
-            "setScalarOverOrographyDict",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
+            "setScalarOverOrographyDict", runTime.constant(), mesh,
+            IOobject::MUST_READ
         )
     );
     
     IOdictionary velocityDict
     (
-        IOobject
-        (
-            "velocityFieldDict",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
+        IOobject("velocityFieldDict", runTime.constant(), mesh, IOobject::MUST_READ)
     );
     
-    // Maximum wind speed
-    const scalar u0(readScalar(velocityDict.lookup("maxVelocity")));
     // Initial maximum tracer value
     const scalar rho0(readScalar(initDict.lookup("rho0")));
     // Initial tracer position
-    scalar x0(readScalar(initDict.lookup("x0")));
+    const scalar x0(readScalar(initDict.lookup("x0")));
     const scalar z0(readScalar(initDict.lookup("z0")));
     // Half widths
     const scalar Ax(readScalar(initDict.lookup("Ax")));
     const scalar Az(readScalar(initDict.lookup("Az")));
-    string tracerFieldFileName = "T";
-    if (args.options().found("tracerFieldFileName"))
-    {
-        tracerFieldFileName = args.options()["tracerFieldFileName"];
-    }
+    // Maximum wind speed
+    const scalar u0(readScalar(velocityDict.lookup("maxVelocity")));
 
-    if (args.options().found("x0"))
-    {
-        x0 = readScalar(IStringStream(args.options()["x0"])());
-    }
+    const string tracerFieldFileName = args.options().found("tracerFieldFileName") ?
+                                       args.options()["tracerFieldFileName"] : "T";
 
     Info << "Creating initial tracer field " << tracerFieldFileName << endl;
     volScalarField T
@@ -146,6 +102,7 @@ int main(int argc, char *argv[])
         "zeroGradient"
     );
     
+    // Set the tracer for each time specified
     for (label i=startTime; i<endTime; i++)
     {
         runTime.setTime(Times[i], i);
@@ -163,7 +120,7 @@ int main(int argc, char *argv[])
             // Define r as used in the initial tracer field
             scalar r = Foam::sqrt(sqr((c.x()-x0t)/Ax)+sqr((c.z()-z0)/Az));
         
-            if (r<=1)
+            if (r <= 1)
             {
                 T[cellI] = rho0*sqr(Foam::cos(M_PI*r/2));
             }

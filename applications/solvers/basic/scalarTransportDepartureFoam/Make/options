@@ -1,13 +1,12 @@
 EXE_INC = \
+    -ggdb3 -O0 \
+    -Wno-old-style-cast \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
-    -I$(FOAM_USER_SRC)/finiteVolume/lnInclude \
-    -I$(FOAM_USER_SRC)/sampling/lnInclude
+    -I$(FOAM_USER_SRC)/finiteVolume/lnInclude
 
 EXE_LIBS = \
     -lfiniteVolume \
     -L$(FOAM_USER_LIBBIN) \
-    -lsampling \
-    -lsamplingUser \
     -lfiniteVolumeUser \
     -ltriSurface \
     -lmeshTools

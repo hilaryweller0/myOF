@@ -68,6 +68,22 @@ int main(int argc, char *argv[])
         dimensionedScalar("stencil", dimless, scalar(0))
     );
 
+    volScalarField stencilWeights
+    (
+        IOobject("stencilWeights", runTime.timeName(), mesh),
+        mesh,
+        dimensionedScalar("stencilWeights", dimless, scalar(0))
+    );
+    
+    // Flux field to define upwind direction
+    surfaceScalarField phi
+    (
+        IOobject("phi", runTime.timeName(), mesh,IOobject::READ_IF_PRESENT),
+        mesh.Cf().component(vector::X)
+      + mesh.Cf().component(vector::Y)
+      + mesh.Cf().component(vector::Z)
+    );
+
     // Loop through all cells and work out if each cell is a member of the 
     // stencil
     forAll(psi, cellI)
@@ -79,10 +95,12 @@ int main(int argc, char *argv[])
         if (psif[faceI] != 0)
         {
             stencil[cellI] = 1;
+            stencilWeights[cellI] = psif[faceI];
         }
     }
 
     stencil.write();
+    stencilWeights.write();
     psif = 0;
     psif[faceI] = 1;
     psif.write();

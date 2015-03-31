@@ -121,13 +121,13 @@ void Foam::meshToPointField
             weights_[ip], Cs, pts[ip], mesh_.nSolutionD()
         );
         
-        if (ip == 438)
-        {
-            Info << "pt = " << pts[ip] << " Cs = " << Cs << endl;
-        }
+//        if (ip == 438)
+//        {
+//            Info << "pt = " << pts[ip] << " Cs = " << Cs << endl;
+//        }
     }
-    label ip = 438;
-    Info << "Face " << ip << " weights " << weights_[ip] << endl;
+//    label ip = 438;
+//    Info << "Face " << ip << " weights " << weights_[ip] << endl;
     stencilSizeField.write();
     orderField.write();
 }

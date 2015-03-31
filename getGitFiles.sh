@@ -5,7 +5,7 @@
 
 exts=".C .H .sh Dict"
 fileNames="Makefile files options runAll gmtDicts fvSchemes fvSolution README"
-excludes="lnInclude linux"
+excludes="lnInclude linux ~"
 
 files=''
 

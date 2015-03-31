@@ -1,0 +1,5 @@
+typedef std::pair<Face_handle,int>
+	Edge; 	The edge type. The Edge(f,i) is edge common to faces f and f.neighbor(i). It is also the edge joining the vertices vertex(cw(i)) and vertex(ccw(i)) of f.
+
+ 	  t.is_edge ( Vertex_handle va, Vertex_handle vb, Face_handle& fr, int & i)
+		as above. In addition, if true is returned, the edge with vertices va and vb is the edge e=(fr,i) where fr is a handle to the face incident to e and on the right side of e oriented from va to vb. 

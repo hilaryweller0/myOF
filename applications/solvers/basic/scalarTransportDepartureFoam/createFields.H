@@ -26,6 +26,7 @@ surfaceScalarField Tf
     ),
     linearInterpolate(T)
 );
+Tf.oldTime();
 
 Info<< "Reading field Uf\n" << endl;
 
@@ -59,13 +60,4 @@ volVectorField U
 
 // Face flux, phi
 surfaceScalarField phi("phi", Uf & mesh.Sf());
-
-// Pressure field to make the flux divergence free
-volScalarField p
-(
-    IOobject("p", runTime.timeName(), mesh),
-    mesh,
-    dimensionedScalar("p", dimensionSet(0,2,-1,0,0), scalar(0)),
-    "zeroGradient"
-);
 

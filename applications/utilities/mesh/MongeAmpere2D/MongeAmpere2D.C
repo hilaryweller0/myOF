@@ -33,7 +33,6 @@ Description
 
 #include "fvCFD.H"
 #include "monitorFunction.H"
-#include "meshToMesh.H"
 #include "faceToPointReconstruct.H"
 
 using namespace Foam;
@@ -70,7 +69,9 @@ int main(int argc, char *argv[])
     // The monitor funciton
     autoPtr<monitorFunction> monitorFunc(monitorFunction::New(controlDict));
     
-    // Read the ratio of the Hessian to volume to use
+    // The ratio of the finite different to the geometric Hessian
+    // (HessianVolumeRatio=1 => geometric Hessian,
+    //  HessianVolumeRatio=0 => finite difference Hessian)
     const scalar HessianVolumeRatio
     (
         readScalar(controlDict.lookup("HessianVolumeRatio"))
@@ -89,12 +90,14 @@ int main(int argc, char *argv[])
     {
         Info<< "Time = " << runTime.timeName() << flush << nl;
 
+        // calculate boostLaplacian to achieve stability
         boostLaplacian = max
         (
             boostLaplacian,
             4*max(scalar(0.25), max(mag(source.internalField())))
         );
 
+        // Setup and solve the Poisson equation for Phi
         fvScalarMatrix PhiEqn
         (
             boostLaplacian*fvm::laplacian(Phi)
@@ -105,34 +108,37 @@ int main(int argc, char *argv[])
         solverPerformance sp = PhiEqn.solve();
         converged = sp.nIterations() == 0;
 
+        // Calculate the gradient of Phi at cell centres and on faces
         gradPhi = fvc::reconstruct(fvc::snGrad(Phi)*mesh.magSf());
-        gradPhi.boundaryField() == (static_cast<volVectorField>(fvc::grad(Phi))).boundaryField();
+        gradPhi.boundaryField()
+            == (static_cast<volVectorField>(fvc::grad(Phi))).boundaryField();
+        // Interpolate gradPhi onto faces and correct the normal component
         gradPhif = fvc::interpolate(gradPhi);
         gradPhif += (fvc::snGrad(Phi) - (gradPhif & mesh.Sf())/mesh.magSf())
                     *mesh.Sf()/mesh.magSf();
 
-        // create the new mesh
+        // Map gradPhi onto vertices in order to create the new mesh
         pointVectorField gradPhiP
              = fvc::faceToPointReconstruct(fvc::snGrad(Phi));
         rMesh.movePoints(mesh.points() + gradPhiP);
 
-        // calculate the determinant of the Hessian
+        // finite difference Hessian and its determinant
         Hessian = fvc::grad(gradPhif);
-        //Hessian = 0.5*(Hessian + Hessian.T());
         forAll(detHess, cellI)
         {
             detHess[cellI] = det(diagTensor::one + Hessian[cellI]);
         }
+        // Geometric version of the Hessian
         volRatio.internalField() =rMesh.V()/mesh.V();
         volRatio.correctBoundaryConditions();
         
-        // combine the Hessian and the volume ratio
+        // combine the finite difference and geometric Hessian
         detHess = (1-HessianVolumeRatio)*detHess + HessianVolumeRatio*volRatio;
 
         // Calculate the laplacian
         del2Phi = fvc::laplacian(Phi);
 
-        // map to or calculate the monitor function to the new mesh and smooth
+        // map to or calculate the monitor function on the new mesh
         monitorR = monitorFunc().map(rMesh, monitor);
         monitorNew.internalField() = monitorR.internalField();
         monitorNew.correctBoundaryConditions();

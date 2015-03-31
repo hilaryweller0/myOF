@@ -23,9 +23,9 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "UpwindFitScheme.H"
+#include "UpwindCorrFitScheme.H"
 #include "cubicUpwindCPCFitPolynomial.H"
-#include "upwindCPCCellToFaceStencilObject.H"
+#include "upwindCPCCellToFaceStencilNewObject.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -33,15 +33,15 @@ namespace Foam
 {
     defineTemplateTypeNameAndDebug
     (
-        UpwindFitData<cubicUpwindCPCFitPolynomial>,
+        UpwindCorrFitData<cubicUpwindCPCFitPolynomial>,
         0
     );
 
-    makeUpwindFitSurfaceInterpolationScheme
+    makeUpwindCorrFitSurfaceInterpolationScheme
     (
         cubicUpwindCPCFit,
         cubicUpwindCPCFitPolynomial,
-        upwindCPCCellToFaceStencilObject
+        upwindCPCCellToFaceStencilNewObject
     );
 }
 

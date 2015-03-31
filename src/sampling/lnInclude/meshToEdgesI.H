@@ -1,1 +1,0 @@
-../meshToPointInterpolation/meshToEdge/meshToEdgesI.H
