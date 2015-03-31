@@ -1,0 +1,28 @@
+#!/bin/sh -e
+cd ${0%/*} || exit 1    # run from this directory
+makeType=${1:-libso}
+
+wmakeCheckPwd "$WM_PROJECT_USER_DIR/src" || {
+    echo "Error: Current directory is not \$WM_PROJECT_USER_DIR/src"
+    echo "    The environment variables are inconsistent with the installation."
+    echo "    Check the OpenFOAM entries in your dot-files and source them."
+    exit 1
+}
+
+[ -n "$FOAM_EXT_LIBBIN" ] || {
+    echo "Error: FOAM_EXT_LIBBIN not set"
+    echo "    Check the OpenFOAM entries in your dot-files and source them."
+    exit 1
+}
+
+set -x
+
+#wmake $makeType parallel/decompose/decompose/dualDecomp
+wmake $makeType fvMeshWithDual
+wmake $makeType TRiSK
+wmake $makeType finiteVolume
+wmake $makeType Hops
+wmake $makeType ExnerTheta
+wmake $makeType sampling
+
+# ----------------------------------------------------------------- end-of-file
