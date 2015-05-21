@@ -1,1 +1,0 @@
-../fvMesh/extendedStencil/FitPolynomials/reducedCubicFitPolynomial.H

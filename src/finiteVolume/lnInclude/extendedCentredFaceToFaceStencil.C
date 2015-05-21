@@ -1,1 +1,0 @@
-../fvMesh/extendedStencil/faceToFace/extendedCentredFaceToFaceStencil.C

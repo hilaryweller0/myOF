@@ -35,3 +35,10 @@ git add $files
 # git pull https://github.com/hilaryweller0/myOF
 # git push myOF master
 
+
+# how to clone and rename:
+git clone https://github.com/hilaryweller0/myOF Joshua-2.3.1
+
+# how to pull AtmosFOAM
+git pull https://github.com/hertzsprung/AtmosFOAM
+

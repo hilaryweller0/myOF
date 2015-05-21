@@ -23,7 +23,7 @@ License
     Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 Application
-    exnerFoamNonOrthogIMEXEX
+    exnerFoamH_IMEXEX
 
 Description
     Transient Solver for buoyant, inviscid, incompressible, non-hydrostatic flow
@@ -45,26 +45,26 @@ int main(int argc, char *argv[])
     #include "setRootCase.H"
     #include "createTime.H"
     #include "createMesh.H"
+    #include "orthogonalBoundaries.H"
     #include "readEnvironmentalProperties.H"
     #include "readThermoProperties.H"
     Hops H(mesh);
     surfaceScalarField gd("gd", g & H.delta());
-    #include "gravityOffHeight.H"
     #define dt runTime.deltaT()
+    
+    const dictionary& itsDict = mesh.solutionDict().subDict("iterations");
+    const int nNonOrthCorr =
+        itsDict.lookupOrDefault<int>("nNonOrthogonalCorrectors", 0);
+    const int nCorr =
+        itsDict.lookupOrDefault<int>("nCorrectors", 1);
+    const scalar offCentre = readScalar(mesh.schemesDict().lookup("offCentre"));
+    //const int nAdvectionSubSteps = readLabel(itsDict.lookup("nAdvectionSubSteps"));
+
     #include "createFields.H"
     #include "initContinuityErrs.H"
     const dimensionedScalar initHeat = fvc::domainIntegrate(theta*rho);
     #include "initEnergy.H"
     #include "energy.H"
-    
-    const dictionary& itsDict = mesh.solutionDict().subDict("iterations");
-    const int nOuterCorr = itsDict.lookupOrDefault<int>("nOuterCorrectors", 2);
-    const int nCorr = itsDict.lookupOrDefault<int>("nCorrectors", 1);
-    const int nNonOrthCorr =
-        itsDict.lookupOrDefault<int>("nNonOrthogonalCorrectors", 0);
-    const scalar offCentre = readScalar(mesh.schemesDict().lookup("offCentre"));
-    const Switch SIgravityWaves(mesh.schemesDict().lookup("SIgravityWaves"));
-    const int nAdvectionSubSteps = readLabel(itsDict.lookup("nAdvectionSubSteps"));
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -78,81 +78,38 @@ int main(int argc, char *argv[])
 
         // update old time variables for Crank-Nicholson
         V.oldTime() += (1-offCentre)*dt*dVdt;
-        U += (1-offCentre)*(U - U.oldTime());
-        //U = H.ddirToFlux(V.oldTime()); // is unstable since flux divergent?
-        
-        // mid-time-step value for rho
-        rho = rho.oldTime() - (1-offCentre)*dt*divU;
-        rhof = fvc::interpolate(rho);
 
-        // Advection sub stepping
-        #include "advectionSubSteps.H"
-
-//        // Old part of theta change (before any variables are updated)
-//        if (SIgravityWaves)
-//        {
-//            thetaf.oldTime() = fvc::interpolate
-//            (
-//                (
-//                    rho.oldTime()*theta.oldTime()
-//                  - (1-offCentre)*dt*dRhoThetadt.oldTime()
-//                )/rho,
-//                "interpolate(theta)"
-//            );
-//        }
-
-        for (int ucorr=0; ucorr<nOuterCorr; ucorr++)
+        #include "rhoEqn.H"
+        #include "rhoThetaEqn.H"
+        #include "Vadvection.H"
+        for(label icorr = 0; icorr < nCorr; icorr++)
         {
-            #include "advectionTheta.H"
-//            // update density according to the continuity equation
-//            solve
-//            (
-//                fvm::ddt(rho) + (1-offCentre)*divU + offCentre*fvc::div(U)
-//            );
-//            // theta equation
-//            fvScalarMatrix thetaEqn
-//            (
-//                fvm::ddt(rho, theta)
-//              + (1-offCentre)*dRhoThetadt.oldTime()
-//              + offCentre*fvc::div(U, theta)
-//              //- fvm::laplacian(diffuseTheta, theta)
-//            );
-//            thetaEqn.solve();
+            #include "exnerEqn.H"
+        }
+        V -= gradPcoeff*fvc::snGrad(Exner);
+        
+        #include "rhoEqn.H"
+        #include "rhoThetaEqn.H"
 
-            // Exner and momentum equations
-            for (int corr=0; corr<nCorr; corr++)
-            {
-                #include "exnerEqn.H"
-            }
-        }
-        
-        // Final solutions for rho (and theta)
-        solve(fvm::ddt(rho) + (1-offCentre)*divU + offCentre*fvc::div(U));
-        // theta equation
-//        fvScalarMatrix thetaEqn
-//        (
-//            fvm::ddt(rho, theta)
-//          + (1-offCentre)*dRhoThetadt.oldTime()
-//          + offCentre*fvc::div(U, theta)
-//          //- fvm::laplacian(diffuseTheta, theta)
-//        );
-//        thetaEqn.solve();
-        
-        // Update rates of change for next time step
-//        if (Charney-Phillips)
-//        {
-//            thetaf -= dt*offCentre*V/(rhof*H.magd())*fvc::snGrad(theta);
-//            theta = fvc::faceToCell(thetaf);
-//        }
-//        else
-        {
-            thetaf = fvc::interpolate(theta);
-        }
-        rhof = fvc::interpolate(rho);
+//        // First Projection step with back substitution
+//        //#include "exnerEqn.H"
+
+//        // Advection of rho, theta and V
+//        #include "advection.H"
+
+//        // Projection step with back substitution
+//        #include "exnerEqn.H"
+//        
+//        // update of rho and V
+//        rho = Exner*Psi;
+//        //V -= gradPcoeff*fvc::snGrad(Exner);
+
+        // updates of rates of change
+        thetaf = fvc::interpolate(theta);
         dVdt += rhof*gd - H.magd()*Cp*rhof*thetaf*fvc::snGrad(Exner)
               - muSponge*V;
         divU = fvc::div(U);
-//        dRhoThetadt = fvc::div(U, theta);
+        divUtheta = fvc::div(U, theta);
         
         #include "compressibleContinuityErrs.H"
 

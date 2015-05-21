@@ -2,7 +2,7 @@ EXE_INC = \
     -ggdb3 -O0 \
     -Wno-old-style-cast \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
-    -I$(FOAM_USER_SRC)/Hops/lnInclude
+    -I$(ATMOSFOAM_SRC)/Hops/lnInclude
 
 EXE_LIBS = \
     -lOpenFOAM \

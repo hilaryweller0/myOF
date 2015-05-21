@@ -1,7 +1,7 @@
 EXE_INC = \
     -IlnInclude \
     -I$(FOAM_USER_SRC)/fvMeshWithDual/lnInclude \
-    -I$(FOAM_USER_SRC)/finiteVolume/lnInclude \
+    -I$(ATMOSFOAM_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -ggdb3 -O0
 

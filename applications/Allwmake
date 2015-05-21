@@ -17,7 +17,6 @@ wmakeCheckPwd "$WM_PROJECT_USER_DIR/applications" || {
 set -x
 
 wmake utilities/mesh/MongeAmpereSphere
-wmake utilities/mesh/add2dMountain
 wmake utilities/mesh/addMountain
 wmake utilities/mesh/diamondMesh
 wmake utilities/mesh/dualRemoveTriangles
@@ -31,44 +30,33 @@ wmake utilities/mesh/VoronoiSphereMesh
 wmake utilities/mesh/writeCellFaceCentres
 
 wmake utilities/postProcessing/calcPV
-wmake utilities/postProcessing/globalSum
-wmake utilities/postProcessing/plotPatchData
-wmake utilities/postProcessing/sumFields
-wmake utilities/postProcessing/thermoVars
 wmake utilities/postProcessing/vorticityDual
 wmake utilities/postProcessing/writeCellData
-wmake utilities/postProcessing/writeCellDataxyz
 wmake utilities/postProcessing/writeSphuvw
-wmake utilities/postProcessing/writeuvw
 
 wmake utilities/preProcessing/addPerturbation
-wmake utilities/preProcessing/createSpongeLayer
 wmake utilities/preProcessing/isothermalBalance/isothermalBalance_H
 wmake utilities/preProcessing/isothermalBalance/isothermalBalance_dpdx
-wmake utilities/preProcessing/makeHotBubble
 wmake utilities/preProcessing/makeSK94perturb
 wmake utilities/preProcessing/set3dJet
 wmake utilities/preProcessing/setAtmosProfile
-wmake utilities/preProcessing/setExnerBalanced
-wmake utilities/preProcessing/setExnerBalancedH
 wmake utilities/preProcessing/setExnerThetaFromT/setExnerThetaFromT_H
 wmake utilities/preProcessing/setJet
 wmake utilities/preProcessing/setPlaneJet
 wmake utilities/preProcessing/setT
-wmake utilities/preProcessing/setTheta
 wmake utilities/preProcessing/setUlinearp
 wmake utilities/preProcessing/setWilliMountain
 wmake utilities/preProcessing/setWilliSteady
-wmake utilities/preProcessing/mapFields
 wmake utilities/preProcessing/stratifiedBalance/stratifiedBalance_H
 
+wmake utilities/test/departurePointStencil
 wmake utilities/test/mappedPatch
 wmake utilities/test/normalModes
+wmake utilities/test/testEigenSVD
 wmake utilities/test/testPerp
+wmake utilities/test/testSnGran
 wmake utilities/test/testTRiSK
 
-wmake solvers/ExnerFoam/ExnerFoam
-wmake solvers/ExnerFoam/ExnerFoamH
 wmake solvers/shallowWaterFoam/vecInv
 
 # ----------------------------------------------------------------- end-of-file

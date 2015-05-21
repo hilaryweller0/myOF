@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     );
 
     // maps for mapping from cell centres to internal edges
-    meshToEdges<polyFit<1> > mte(mesh);
+    meshToEdges<polyFit<oONE> > mte(mesh);
     //faceToPoint<polyFit<1> > ftp(mesh);
     
     // Open control dictionary

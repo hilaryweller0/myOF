@@ -3,7 +3,7 @@ EXE_DEBUG = -DFULLDEBUG -ggdb3 -O0
 EXE_INC =  \
     ${EXE_DEBUG} \
     -I$(FOAM_USER_SRC)/fvMeshWithDual/lnInclude \
-    -I$(FOAM_USER_SRC)/finiteVolume/lnInclude \
+    -I$(ATMOSFOAM_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/surfMesh/lnInclude \

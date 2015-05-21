@@ -20,9 +20,5 @@ set -x
 #wmake $makeType parallel/decompose/decompose/dualDecomp
 wmake $makeType fvMeshWithDual
 wmake $makeType TRiSK
-wmake $makeType finiteVolume
-wmake $makeType Hops
-wmake $makeType ExnerTheta
-wmake $makeType sampling
 
 # ----------------------------------------------------------------- end-of-file

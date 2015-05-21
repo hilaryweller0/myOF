@@ -4,6 +4,7 @@ EXE_INC =  \
     ${EXE_DEBUG} \
     -I$(FOAM_USER_SOLVERS)/atmosFoam/icoSphereFoam \
     -I$(FOAM_USER_SRC)/fvMeshWithDual/lnInclude \
+    -I$(ATMOSFOAM_SRC)/finiteVolume/lnInclude \
     -I$(FOAM_USER_SRC)/TRiSK/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \

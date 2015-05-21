@@ -5,7 +5,7 @@ EXE_INC =  \
     -I../VoronoiSphereMesh/InitialPoints \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(FOAM_USER_SRC)/fvMeshWithDual/lnInclude \
-    -I$(FOAM_USER_SRC)/finiteVolume/lnInclude \
+    -I$(ATMOSFOAM_SRC)/finiteVolume/lnInclude \
 
 EXE_LIBS = \
     -L$(FOAM_USER_LIBBIN) \

@@ -4,9 +4,9 @@ EXE_INC =  \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(FOAM_USER_SRC)/fvMeshWithDual/lnInclude \
     -I$(FOAM_USER_SRC)/TRiSK/lnInclude \
-    -I$(FOAM_USER_SRC)/finiteVolume/lnInclude \
-    -I$(FOAM_USER_SRC)/sampling/lnInclude \
-    -I$(FOAM_USER_SRC)/monitorFunction/lnInclude \
+    -I$(ATMOSFOAM_SRC)/finiteVolume/lnInclude \
+    -I$(ATMOSFOAM_SRC)/sampling/lnInclude \
+    -I$(ATMOSFOAM_SRC)/monitorFunction/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude
 

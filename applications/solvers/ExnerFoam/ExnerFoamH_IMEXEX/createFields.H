@@ -49,14 +49,6 @@ surfaceScalarField thetaf
 );
 thetaf.oldTime();
 
-//// Diffusion coefficient for theta
-//const surfaceScalarField diffuseTheta
-//(
-//    IOobject("diffuseTheta", runTime.constant(), mesh, IOobject::READ_IF_PRESENT),
-//    mesh,
-//    dimensionedScalar("diffuseTheta", dimensionSet(1,-1,-1,0,0), scalar(0))
-//);
-
 // Reading in the sponge layer coefficients (if present)
 surfaceScalarField muSponge
 (
@@ -122,6 +114,7 @@ surfaceScalarField U
     rhof*(Uf & mesh.Sf())
 //    phiUBCs
 );
+U.oldTime();
 
 Info << "Calculating V mass circulation field\n" << endl;
 surfaceScalarField V
@@ -141,33 +134,34 @@ surfaceScalarField Vu
 );
 
 // Perpendicular component of the momentum
-surfaceVectorField vperp("vperp", rhof*(Uf - (Uf & H.delta())*H.delta()/sqr(H.magd())));
+//surfaceVectorField vperp("vperp", Uf - (Uf & H.delta())*H.delta()/sqr(H.magd()));
 
 // Rates of change for Crank-Nicholson
 surfaceScalarField dVdt
 (
     IOobject("dVdt", runTime.timeName(), mesh),
     -(H.delta() & (fvc::interpolate(fvc::div(U,u))+2*rhof*(Omega^(Uf-Ug))))
-    +rhof*gd - H.magd()*Cp*rhof*thetaf*fvc::snGrad(Exner),
+    +rhof*(gd - H.magd()*Cp*thetaf*fvc::snGrad(Exner)),
      VuBCs
 );
-//surfaceScalarField dUdt
+dVdt.oldTime();
+
+surfaceScalarField G("G", 1/(1+offCentre*dt*muSponge));
+surfaceScalarField gradPcoeff = G*offCentre*Cp*dt
+                               *rhof*thetaf*H.magd();
+//// intermediate values for sub time-stepping of advection
+//surfaceScalarField divUu1
 //(
-//    IOobject("dUdt", runTime.timeName(), mesh),
-//    mesh,
-//    dimensionedScalar("dUdt", dimensionSet(1,0,-2,0,0), scalar(0))
+//    IOobject("divUu1", runTime.timeName(), mesh),
+//    fvc::interpolate(fvc::div(U,u)) & H.delta(),
+//    VuBCs
 //);
 
-volScalarField divU("divU", fvc::div(U));
-//volScalarField dRhoThetadt("dRhoThetadt", fvc::div(U, theta));
 
-// intermediate values for sub time-stepping of advection
-surfaceScalarField divUu1
-(
-    IOobject("divUu1", runTime.timeName(), mesh),
-    fvc::interpolate(fvc::div(U,u)) & H.delta(),
-    VuBCs
-);
+volScalarField divU("divU", fvc::div(U));
+volScalarField divUtheta("divUtheta", fvc::div(U, theta));
+divU.oldTime();
+divUtheta.oldTime();
 
 // fix no flow boundaries
 forAll(Vu.boundaryField(), patchi)
@@ -181,14 +175,14 @@ forAll(Vu.boundaryField(), patchi)
     {
         Vu.boundaryField()[patchi] == 0;
         dVdt.boundaryField()[patchi] == 0;
-        divUu1.boundaryField()[patchi] == 0;
+        //divUu1.boundaryField()[patchi] == 0;
     }
 }
 
-surfaceScalarField divUu2("divUu2", divUu1);
-surfaceScalarField divUu3("divUu3", divUu1);
+//surfaceScalarField divUu2("divUu2", divUu1);
+//surfaceScalarField divUu3("divUu3", divUu1);
 
-volScalarField divUt1("divUt1", fvc::div(U,theta));
-volScalarField divUt2("divUt2", divUt1);
-volScalarField divUt3("divUt3", divUt1);
+//volScalarField divUt1("divUt1", fvc::div(U,theta));
+//volScalarField divUt2("divUt2", divUt1);
+//volScalarField divUt3("divUt3", divUt1);
 

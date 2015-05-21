@@ -1,10 +1,11 @@
 #!/bin/bash -e
 
-# Instructions for installing gmtFoam on ubuntu
-# A tool for plotting 2D OpenFoam results using gmt (generic mapping tools)
+# Instructions for installing AtmosFOAM on ubuntu
 
-# There are no shortcuts for these instructions. The lines should be copied
-# one at a time onto the command line and check the outcome
+# This installation won't run as a script. You will need
+# to copy line by line onto the command line
+# You will need admin previligdes for sudo commands
+# The file also includes documentation
 
 # installing openfoam
 # instructions from:
@@ -20,7 +21,7 @@ sudo apt-get install openfoam231
 #**    . /opt/openfoam231/etc/bashrc
 #**
 #** To your ~/.bashrc
-
+. /opt/openfoam231/etc/bashrc
 
 # pre-requisites for installing gmt
 sudo apt-get install cmake libnetcdf-dev
@@ -55,16 +56,28 @@ sudo apt-get install git
 # install gv (for viewing postscript files)
 sudo apt-get install gv
 
+# install pdfcrop
+sudo apt-get install texlive-extra-utils
 
-# installing gmtFoam
-mkdir -p $WM_PROJECT_USER_DIR/applications/utilities/postProcessing
-cd $WM_PROJECT_USER_DIR/applications/utilities/postProcessing
-git clone https://github.com/hilaryweller0/gmtFoam
-cd gmtFoam
-wmake
-cp -r gmt $HOME
+# installing AtmosFOAM
+mkdir -p $HOME/OpenFOAM
+cd $HOME/OpenFOAM
+git clone https://github.com/hertzsprung/AtmosFOAM AtmosFOAM-$WM_PROJECT_VERSION
+cd AtmosFOAM-$WM_PROJECT_VERSION
 
-# To create an OpenFOAM tutorial case
+#** add the following line to your $HOME/.bashrc
+#** 
+#** export ATMOSFOAM_SRC=$HOME/$WM_PROJECT/AtmosFOAM-$WM_PROJECT_VERSION/src
+#** 
+
+export ATMOSFOAM_SRC=$HOME/$WM_PROJECT/AtmosFOAM-$WM_PROJECT_VERSION/src
+
+# and then build AtmosFOAM:
+./Allwmake
+
+
+
+# To create and run an OpenFOAM tutorial case
 mkdir -p $FOAM_RUN/tutorials/incompressible/icoFoam
 cp -r $FOAM_TUTORIALS/incompressible/icoFoam/cavity \
       $FOAM_RUN/tutorials/incompressible/icoFoam
@@ -72,11 +85,11 @@ cd $FOAM_RUN/tutorials/incompressible/icoFoam/cavity
 blockMesh
 icoFoam
 
-# Instructions on how to use gmtFoam
+# Instructions on how to use gmtFoam (for plotting results)
 # from the OpenFOAM case where you want to use it (assuming this is 
 # $FOAM_RUN/tutorials/incompressible/icoFoam/cavity)
 cd $FOAM_RUN/tutorials/incompressible/icoFoam/cavity
-cp -r $WM_PROJECT_USER_DIR/applications/utilities/postProcessing/gmtFoam/gmtDicts constant
+cp -r $HOME/OpenFOAM/AtmosFOAM-$WM_PROJECT_VERSION/applications/utilities/postProcessing/gmtFoam/gmtDicts constant
 
 # and to finally run gmtFoam to create a mesh plot and a results plot
 gmtFoam -time 0 mesh
@@ -96,9 +109,5 @@ sudo apt-get install gedit-plugins openssh-server #\
 # fix for gedit (which you may not need)
 # sudo chown -R $USER:$USER ~/.cache
 
-# installing the rest of Hilary's OpenFOAM developments
-mkdir -p $HOME/OpenFOAM
-cd $HOME/OpenFOAM
-git clone https://github.com/hilaryweller0/myOF Hilary-$WM_PROJECT_VERSION
 
 

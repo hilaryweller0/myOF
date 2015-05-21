@@ -9,7 +9,7 @@ EXE_INC =  \
     -IInitialPoints \
     -IVoronoiSphereMeshing \
     -I$(FOAM_USER_SRC)/fvMeshWithDual/lnInclude \
-    -I$(FOAM_USER_SRC)/finiteVolume/lnInclude \
+    -I$(ATMOSFOAM_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(FOAM_SRC)/meshTools/lnInclude \
     -I$(FOAM_SRC)/dynamicMesh/lnInclude \
