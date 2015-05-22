@@ -145,6 +145,12 @@ surfaceScalarField dVdt
      VuBCs
 );
 dVdt.oldTime();
+surfaceScalarField dUdt
+(
+    IOobject("dUdt", runTime.timeName(), mesh),
+    (U - U.oldTime())/dt,
+     VuBCs
+);
 
 surfaceScalarField G("G", 1/(1+offCentre*dt*muSponge));
 surfaceScalarField gradPcoeff = G*offCentre*Cp*dt
@@ -175,6 +181,7 @@ forAll(Vu.boundaryField(), patchi)
     {
         Vu.boundaryField()[patchi] == 0;
         dVdt.boundaryField()[patchi] == 0;
+        dUdt.boundaryField()[patchi] == 0;
         //divUu1.boundaryField()[patchi] == 0;
     }
 }

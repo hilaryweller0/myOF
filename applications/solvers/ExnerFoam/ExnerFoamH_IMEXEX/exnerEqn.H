@@ -7,6 +7,8 @@
 
     // Other Explicit part of rate of change of flux
     dVdt = -H.delta() & (2*rhof*(Omega^(Uf-Ug)));
+//    dUdt = H.ddirToFlux(dVdt + rhof*gd)
+//         - H.ddirToFluxOffDiag(Cp*rhof*thetaf*H.magd()*fvc::snGrad(Exner));
 
     // Vu is the flux without g or dpdz (to get the BCs right)
     Vu = G*(V.oldTime() + offCentre*dt*dVdt);

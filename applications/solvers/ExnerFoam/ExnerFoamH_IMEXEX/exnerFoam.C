@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     const int nCorr =
         itsDict.lookupOrDefault<int>("nCorrectors", 1);
     const scalar offCentre = readScalar(mesh.schemesDict().lookup("offCentre"));
-    //const int nAdvectionSubSteps = readLabel(itsDict.lookup("nAdvectionSubSteps"));
+    const int nAdvectionSubSteps = readLabel(itsDict.lookup("nAdvectionSubSteps"));
 
     #include "createFields.H"
     #include "initContinuityErrs.H"
@@ -76,40 +76,24 @@ int main(int argc, char *argv[])
 
         #include "compressibleCourantNo.H"
 
-        // update old time variables for Crank-Nicholson
+        // Strang Carry-over steps
         V.oldTime() += (1-offCentre)*dt*dVdt;
+        U = U.oldTime() + (1-offCentre)*dt*dUdt;
 
-        #include "rhoEqn.H"
-        #include "rhoThetaEqn.H"
-        #include "Vadvection.H"
+        #include "advection.H"
         for(label icorr = 0; icorr < nCorr; icorr++)
         {
             #include "exnerEqn.H"
         }
         V -= gradPcoeff*fvc::snGrad(Exner);
-        
-        #include "rhoEqn.H"
-        #include "rhoThetaEqn.H"
-
-//        // First Projection step with back substitution
-//        //#include "exnerEqn.H"
-
-//        // Advection of rho, theta and V
-//        #include "advection.H"
-
-//        // Projection step with back substitution
-//        #include "exnerEqn.H"
-//        
-//        // update of rho and V
-//        rho = Exner*Psi;
-//        //V -= gradPcoeff*fvc::snGrad(Exner);
 
         // updates of rates of change
         thetaf = fvc::interpolate(theta);
         dVdt += rhof*gd - H.magd()*Cp*rhof*thetaf*fvc::snGrad(Exner)
               - muSponge*V;
-        divU = fvc::div(U);
-        divUtheta = fvc::div(U, theta);
+//        dUdt -= H.Hdiag()*H.magd()*Cp*rhof*thetaf*fvc::snGrad(Exner)
+//              - muSponge*U;
+        dUdt = (U - U.oldTime())/(offCentre*dt);
         
         #include "compressibleContinuityErrs.H"
 

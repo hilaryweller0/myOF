@@ -17,16 +17,14 @@
     alpha[1] = 0.25;
     alpha[2] = 2/3.;
     
-    surfaceScalarField Umid("U",(1-offCentre)*U.oldTime() + offCentre*U);
-    volScalarField divU("divU", fvc::div(Umid));
     Vu = V.oldTime();
-    u = H.reconstructd(V.oldTime())/rho;
+    u = H.reconstructd(Vu)/rho;
     
     for(label irk = 0; irk < alpha.size(); irk++)
     {
         Info << ' ' << irk << flush;
         Vu = (1-alpha[irk])*V.oldTime() + alpha[irk]*Vu
-          - alpha[irk]*dt*(fvc::interpolate(fvc::div(Umid,u)) & H.delta());
+          - alpha[irk]*dt*(fvc::interpolate(fvc::div(U,u)) & H.delta());
         u = H.reconstructd(Vu)/rho;
     }
     V.oldTime() = Vu;
